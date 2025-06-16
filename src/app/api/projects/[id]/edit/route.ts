@@ -1,15 +1,12 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
-  req: NextRequest, // ✅ Gunakan NextRequest, bukan Request biasa
-  context: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
-  const { params } = context;
-  const id = params.id;
-
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -22,7 +19,7 @@ export async function PATCH(
 
   const project = await prisma.project.findFirst({
     where: {
-      id,
+      id: params.id,
       ownerId: session.user.id,
     },
   });
@@ -35,7 +32,7 @@ export async function PATCH(
   }
 
   const updated = await prisma.project.update({
-    where: { id },
+    where: { id: params.id },
     data: { name },
   });
 
