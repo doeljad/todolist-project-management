@@ -19,7 +19,7 @@ export async function PATCH(
 
   const project = await prisma.project.findFirst({
     where: {
-      id: params.id,
+      id: params.id, 
       ownerId: session.user.id,
     },
   });

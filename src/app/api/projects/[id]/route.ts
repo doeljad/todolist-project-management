@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+// PATCH: Edit project name
 export async function PATCH(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
@@ -22,7 +23,10 @@ export async function PATCH(
   });
 
   if (!project) {
-    return NextResponse.json({ message: "Hanya owner yang dapat mengubah nama project" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Hanya owner yang dapat mengubah nama project" },
+      { status: 403 }
+    );
   }
 
   const updated = await prisma.project.update({
@@ -36,8 +40,9 @@ export async function PATCH(
   });
 }
 
+// DELETE: Hapus project
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   { params }: { params: { id: string } }
 ) {
   const session = await getServerSession(authOptions);
@@ -50,7 +55,10 @@ export async function DELETE(
   });
 
   if (!project) {
-    return NextResponse.json({ message: "Hanya owner yang dapat menghapus project" }, { status: 403 });
+    return NextResponse.json(
+      { message: "Hanya owner yang dapat menghapus project" },
+      { status: 403 }
+    );
   }
 
   await prisma.task.deleteMany({ where: { projectId: params.id } });
