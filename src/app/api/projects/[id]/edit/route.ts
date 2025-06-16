@@ -1,9 +1,12 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export async function PATCH(req: Request, context: { params: { id: string } }) {
+export async function PATCH(
+  req: NextRequest, // ✅ Gunakan NextRequest, bukan Request biasa
+  context: { params: { id: string } }
+) {
   const { params } = context;
   const id = params.id;
 
@@ -24,17 +27,17 @@ export async function PATCH(req: Request, context: { params: { id: string } }) {
     },
   });
 
-if (!project) {
-  return NextResponse.json(
-    { message: "Hanya owner yang dapat mengubah nama project" },
-    { status: 403 }
-  );
-}
+  if (!project) {
+    return NextResponse.json(
+      { message: "Hanya owner yang dapat mengubah nama project" },
+      { status: 403 }
+    );
+  }
+
   const updated = await prisma.project.update({
     where: { id },
     data: { name },
   });
 
-  
   return NextResponse.json(updated);
 }
