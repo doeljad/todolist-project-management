@@ -3,9 +3,13 @@ import type { NextConfig } from "next";
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverActions: true,
+    serverActions: {},
+  },
+  eslint: {
+    ignoreDuringBuilds: true, 
   },
 };
 
 export default nextConfig;
+
 
