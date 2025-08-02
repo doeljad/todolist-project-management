@@ -1,4 +1,4 @@
-# Project Fullstack Sellerpintar - Abdullah Sajad
+# Project - Abdullah Sajad
 
 Tes Fullstack dengan fitur Manajemen Proyek dan Tugas menggunakan Next.js 15, Prisma, NextAuth, dan PostgreSQL.
 
